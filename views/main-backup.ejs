@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .button {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="mt-4"><%= title %></h1>
+    <div id="main-container" class="mt-4">
+      <div class="row">
+          <div class="col-md-4">
+            <% if (session.sessionKey) { %>
+              <button class="btn btn-success btn-block mb-3" onclick="sendGetRequest('/logout');">Logout</button>
+              <% features.forEach(function(feature) { %>
+              <button class="btn btn-success btn-block mb-3" onclick="sendGetRequest('<%= feature.href %>');">
+              <%= feature.label %>
+              </button>
+              <% }); %>
+            <% } else if (!session.sessionKey) { %>
+              <button class="btn btn-success btn-block mb-3" onclick="sendGetRequest('/login');">Login</button>
+            <% } %>
+          </div>
+      </div>
+    </div>
+    <div id="notlogin" class="md-4"></div>
+    <div id="response-container" class="mt-4"></div>
+  </div>
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    
+    function sendGetRequest(url) {
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.text();
+        })
+        .then(data => {
+          //console.log('Response:', data);
+          document.getElementById('response-container').innerHTML = data;
+         /*  if (!session.sessionKey) {
+            //document.getElementById('main-container').innerHTML = data;
+            console.log("no sessionkey")
+          } else {
+            document.getElementById('response-container').innerHTML = data;
+          } */
+          
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+  </script>
+</body>
+</html>
+
