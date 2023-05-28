@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    
+    .result-card {
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      color: blueviolet;
+      
+    }
+  </style>
+</head>
+<body>
+  <h1><%= title %></h1>
+
+  <div class="container">
+    <% data.forEach(function(kv) { %>
+      <div class="result-card">
+        <% for (var key in kv) { %>
+          <p><strong><%= key %>:</strong> <%= kv[key] %></p>
+        <% } %>
+      </div>
+    <% }); %>
+  </div>
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
