@@ -8,6 +8,7 @@ app.set('view engine', 'ejs');
 // Serve the static HTML file
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
+const saltModuleRouter = require('./salt');
 
 // Configure the session middleware
 app.use(
@@ -114,6 +115,9 @@ function requireLogin(req, res, next) {
   }
 }
 
+// Use the routes from salt.js
+app.use('/salt', requireLogin, saltModuleRouter);
+
 function logoutMiddleware(req, res, next) {
   const sessionKey = req.sessionKey; // Get the sessionKey from the request object
   //console.log("logout sekey: ", req.sessionKey)
@@ -198,13 +202,18 @@ app.post('/login', (req, res) => {
   });
 });
 
+app.get('/mysalt', requireLogin, (req, res) => {
+  res.render('mysalt');
+});
+
 app.get('/', (req, res) => {
   if (req.session.sessionKey) {
     console.log(`sessionkey is: ${JSON.stringify(req.session)}`);
     res.render('main', {title: 'SUMA Info', 
     features:
     [{label: 'Get Systems', href: '/getsystems'},
-     {label: 'Get Channels', href: '/getchannels'}
+     {label: 'Get Channels', href: '/getchannels'},
+     {label: 'Get online minions', href: '/mysalt'}
     ],
     session: req.session, // Pass the session object to the template
     req: req.path

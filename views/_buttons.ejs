@@ -1,0 +1,11 @@
+<% if (session.sessionKey) { %>
+    <button class="btn btn-success btn-block mb-3" onclick="sendGetRequest('/logout');">Logout</button>
+    <% features.forEach(function(feature) { %>
+      <button class="btn btn-success btn-block mb-3" onclick="sendGetRequest('<%= feature.href %>');">
+        <%= feature.label %>
+      </button>
+    <% }); %>
+  <% } else if (!session.sessionKey) { %>
+    <button class="btn btn-success btn-block mb-3" onclick="sendGetRequest('/login');">Login</button>
+  <% } %>
+  
